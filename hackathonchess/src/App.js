@@ -1,27 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
 
-import { initializeApp } from "firebase/app";
+import { useEffect, useState } from 'react';
 
-import { doc, setDoc, Timestamp, getFirestore } from "firebase/firestore";
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAMkg01S-9Al-U99ocqbQSGhxCygl8ZBW4",
-  authDomain: "realtime-chess-abde5.firebaseapp.com",
-  projectId: "realtime-chess-abde5",
-  storageBucket: "realtime-chess-abde5.appspot.com",
-  messagingSenderId: "1090941740351",
-  appId: "1:1090941740351:web:1680feb601abb474169f8a",
-  measurementId: "G-P48DT1P0V3"
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore();
+import Home from './components/Home';
+import SignIn from './components/SignIn';
+import { auth } from './firebase';
 
 
 function App() {
+
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(userAuth => {    
+        if (userAuth) {
+            const user = {uid: userAuth.uid,email: userAuth.email}
+            console.log('userAuth', userAuth)
+            setUser(user)
+        } else {
+            setUser(null)
+        }
+    })
+    return unsubscribe
+}, [])
+
 
   // const docData = {
   //   stringExample: "Hello world!",
@@ -41,20 +43,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React Test
-        </a>
-      </header>
+      {user ? <Home /> : <SignIn />}
     </div>
   );
 }
