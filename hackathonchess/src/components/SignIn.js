@@ -13,7 +13,10 @@ const SignIn = () => {
         createUserWithEmailAndPassword(getAuth(), emailRef.current.value, passwordRef.current.value)
             .then(user => {
                 console.log(user)
-            }).catch(err => {console.log(err)})
+            }).catch(err => {
+                console.log(err)
+                alert("Error:\n\nYou may have entered an invalid email or your password is less than 6 characters.")
+            })
         }
     
     const signIn = e => {
@@ -21,7 +24,10 @@ const SignIn = () => {
         signInWithEmailAndPassword(getAuth(), emailRef.current.value, passwordRef.current.value)
             .then(user => {
                 console.log('user', user)
-            }).catch(err => {console.log(err)})
+            }).catch(err => {
+                console.log(err)
+                alert("Error:\n\nThe credentials you have entered are not valid.")
+            })
     }
 
     return (
