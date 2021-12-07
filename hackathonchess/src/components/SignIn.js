@@ -25,14 +25,16 @@ const SignIn = () => {
     }
 
     return (
-    <div className="signin">
-        <form action="">
-            <h1>Sign in</h1>
-            <input ref={emailRef} type="email"/>
-            <input ref={passwordRef} type="password"/>
-            <button onClick={signIn}>Sign in</button>
-            <h6>Not yet registered? <span className="signin__link" onClick={signUp}>sign up</span></h6>
-        </form></div>
+        <div className="outerForm">
+            <div className="signin">
+                <form action="">
+                    <h1 className="heading">Advance[d] Chess</h1>
+                    <input ref={emailRef} type="email" placeholder="Email" />
+                    <input ref={passwordRef} type="password" placeholder="Password" />
+                    <button onClick={signIn} class="btn btn-primary btn-block btn-large">LOGIN</button>
+                    <p>Not yet registered? <span className="signin__link" onClick={signUp}>sign up</span></p>
+                </form></div>
+        </div>
     )
 
     
