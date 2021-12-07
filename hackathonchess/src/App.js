@@ -2,7 +2,7 @@ import './App.css';
 
 import { useEffect, useState } from 'react';
 
-import Home from './components/Home';
+import Lobby from './components/Lobby';
 import SignIn from './components/SignIn';
 import { auth } from './firebase';
 
@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div className="App">
-      {user ? <Home /> : <SignIn />}
+      {user ? <Lobby /> : <SignIn />}
     </div>
   );
 }
