@@ -83,6 +83,7 @@ exports.matchmakingEventHandler = functions.firestore
                     await db.collection("chess_queue").add({
                         uid,
                         timestamp,
+                        displayName,
                     });
                 }
 
