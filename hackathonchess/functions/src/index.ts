@@ -56,19 +56,22 @@ exports.matchmakingEventHandler = functions.firestore
                 querySnapshot.forEach(async (doc) => {
                     matchFound = true;
                     //Remove user from the queue
-                    await db.collection("chess_queue").doc(doc.id).delete();
 
-                    //Create Game Information
-                    await db.collection("chess_games").add({
-                        whiteUid: doc.data().uid,
-                        whiteDisplayName: doc.data().uid.displayName,
-                        blackUid: uid,
-                        blackDisplayName: displayName,
-                        state: "Active",
-                        gameStarted: admin.firestore.Timestamp.now(),
-                        gameLastUpdated: admin.firestore.Timestamp.now(),
-                        pgn: "",
-                    });
+                    if (doc.data().uid !== uid) {
+                        await db.collection("chess_queue").doc(doc.id).delete();
+
+                        //Create Game Information
+                        await db.collection("chess_games").add({
+                            whiteUid: doc.data().uid,
+                            whiteDisplayName: doc.data().uid.displayName,
+                            blackUid: uid,
+                            blackDisplayName: displayName,
+                            state: "Active",
+                            gameStarted: admin.firestore.Timestamp.now(),
+                            gameLastUpdated: admin.firestore.Timestamp.now(),
+                            pgn: "",
+                        });
+                    }
                 });
 
                 warn("'WARNING'", {
