@@ -63,7 +63,7 @@ exports.matchmakingEventHandler = functions.firestore
                         //Create Game Information
                         await db.collection("chess_games").add({
                             whiteUid: doc.data().uid,
-                            whiteDisplayName: doc.data().uid.displayName,
+                            whiteDisplayName: doc.data().displayName,
                             blackUid: uid,
                             blackDisplayName: displayName,
                             state: "Active",
