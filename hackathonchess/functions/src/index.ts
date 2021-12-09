@@ -19,33 +19,31 @@ exports.chessEventHandler = functions.firestore
         const gameId = chessEvent.gameId;
         const pgn = chessEvent.pgn;
         const timestamp = chessEvent.timestamp;
-        let gameStat = "Active";
+        let state = "Active";
 
         //Check if game is completed
-        if (pgn.substring(pgn.length - 1) === "+") {
-            gameStat = "Completed";
+        if (pgn.substring(pgn.length - 1) === "#") {
+            state = "Completed";
         }
 
         //Updated Game Information
         db.collection("chess_games").doc(gameId).update({
             pgn,
-            gameStat,
-            GameLastUpdated: timestamp,
+            state,
+            gameLastUpdated: timestamp,
         });
     });
 
 exports.matchmakingEventHandler = functions.firestore
     .document("match_events/{id}")
     .onCreate(async (snapshot) => {
-        // console.log(snapshot)
         //Get Snapshot Data
         const matchmakingEvent: MatchmakingEventInterface = <
             MatchmakingEventInterface
             >snapshot.data();
         const uid = matchmakingEvent.uid;
+        const displayName = matchmakingEvent.displayName;
         const timestamp = matchmakingEvent.timestamp;
-
-        // let opponent: MatchmakingEventInterface | undefined;
 
         //Check to see if anyone is in the queue
         db.collection("chess_queue")
@@ -63,7 +61,9 @@ exports.matchmakingEventHandler = functions.firestore
                     //Create Game Information
                     await db.collection("chess_games").add({
                         whiteUid: doc.data().uid,
+                        whiteDisplayName: doc.data().uid.displayName,
                         blackUid: uid,
+                        blackDisplayName: displayName,
                         state: "Active",
                         gameStarted: admin.firestore.Timestamp.now(),
                         gameLastUpdated: admin.firestore.Timestamp.now(),
